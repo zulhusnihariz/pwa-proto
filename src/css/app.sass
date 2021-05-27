@@ -1,0 +1,22 @@
+// app global css in Sass form
+.small-screen-only
+  @media (max-width: $breakpoint-xs-max)
+    display: display
+  @media (min-width: $breakpoint-sm-min)
+    display: none
+
+.large-screen-only
+  @media (max-width: $breakpoint-xs-max)
+    display: none
+  @media (min-width: $breakpoint-sm-min)
+    display: flex
+
+.constraint
+  margin: 0 auto
+  max-width: 500px
+
+.constraintless
+  max-width: 975px
+  
+
+
