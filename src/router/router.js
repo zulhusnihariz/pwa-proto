@@ -1,5 +1,5 @@
 const AuthenticationController = require("../controllers/AuthenticationController");
 
 module.exports = app => {
-  app.post("/", AuthenticationController.login);
+  app.post("/register", AuthenticationController.registerUser);
 };

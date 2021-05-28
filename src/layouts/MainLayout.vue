@@ -15,7 +15,7 @@
         </q-toolbar-title>
 
         <q-btn
-          v-if="true"
+          v-if="user"
           dense
           flat
           round
@@ -25,11 +25,11 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-if="true" show-if-above v-model="right" side="right" bordered>
+    <q-drawer v-if="user" show-if-above v-model="right" side="right" bordered>
       <DrawerList @onclick="close"></DrawerList>
     </q-drawer>
 
-    <Footer v-if="true"></Footer>
+    <Footer v-if="user"></Footer>
 
     <q-page-container color="background">
       <router-view />
@@ -40,10 +40,11 @@
 <script>
 import DrawerList from "../components/MainLayout/DrawerList";
 import Footer from "../components/MainLayout/Footer";
+import Banner from "../components/MainLayout/Banner";
 
 export default {
   name: "MainLayout",
-  components: { DrawerList, Footer },
+  components: { DrawerList, Footer, Banner },
   data() {
     return {
       right: false
@@ -52,6 +53,11 @@ export default {
   methods: {
     close() {
       this.right = !this.right;
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
     }
   }
 };

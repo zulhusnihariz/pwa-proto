@@ -1,4 +1,9 @@
+/* -------------------------------------------------------------------------- */
+/*                               Firebase Admin SDK                           */
+/* -------------------------------------------------------------------------- */
+
 const admin = require("firebase-admin");
+
 const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
@@ -6,5 +11,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const auth = admin.auth();
 
-module.exports = db;
+module.exports = { auth };

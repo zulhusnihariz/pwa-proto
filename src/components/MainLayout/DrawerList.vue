@@ -33,7 +33,7 @@
           >Change Password</q-item-section
         >
       </q-item>
-      <q-item :to="{ name: 'Login' }" clickable v-ripple>
+      <q-item :to="{ name: 'Logout' }" @click="logoutUser" clickable v-ripple>
         <q-item-section avatar>
           <q-icon color="primary" name="logout" />
         </q-item-section>
@@ -44,7 +44,18 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
-  name: "DrawerList"
+  name: "DrawerList",
+  data() {
+    return { user: this.$store.state.user };
+  },
+  methods: {
+    async logoutUser() {
+      this.$store.dispatch("resetUser");
+      this.$router.push({ name: "Login" });
+    }
+  }
 };
 </script>

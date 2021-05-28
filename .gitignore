@@ -1,6 +1,9 @@
 .DS_Store
 .thumbs.db
 node_modules
+/src/config
+/src/models/serviceAccountKey
+/src/models/firebaseConfig
 
 # Quasar core related directories
 .quasar

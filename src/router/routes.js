@@ -28,6 +28,11 @@ const routes = [
         path: "/check-in",
         name: "CheckIn",
         component: () => import("pages/CheckIn.vue")
+      },
+      {
+        path: "/logout",
+        name: "Logout",
+        component: () => import("pages/Login.vue")
       }
     ]
   },

@@ -1,14 +1,27 @@
-const { db } = require("../models/firebase.js");
+const { auth } = require("../models/firebase.js");
+const firebase = require("firebase");
 
 module.exports = {
-  async loginUser(request, response) {
-    const sentRequest = request.body;
+  async registerUser(request, response) {
+    /* -------------------------------------------------------------------------- */
+    /*                             Firebase Admin SDK                             */
+    /* -------------------------------------------------------------------------- */
+    try {
+      console.log(request.body);
+      const userRecord = await auth.createUser({
+        uid: request.body.uid,
+        email: request.body.email,
+        password: request.body.password
+      });
+      const user = await userRecord.user;
 
-    const user = await db.collection("users").get();
-    user.forEach(doc => {
-      response.send(doc.data());
-    });
+      const customToken = await auth.createCustomToken(userRecord.uid);
 
-    console.log(user);
+      response.send(user);
+    } catch (error) {
+      response
+        .status(500)
+        .send({ error: "An error has occured trying to sign up" });
+    }
   }
 };

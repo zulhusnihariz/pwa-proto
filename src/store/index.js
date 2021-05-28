@@ -1,29 +1,46 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import firebase from "firebase";
+import "firebase/auth";
 
-// import example from './module-example'
+Vue.use(Vuex);
 
-Vue.use(Vuex)
+const store = new Vuex.Store({
+  namespaced: true,
+  plugins: [createPersistedState()],
+  state: {
+    user: null,
+    isLoggedIn: false
+  },
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
-
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      // example
+  mutations: {
+    setUser(state) {
+      state.user = firebase.auth().currentUser;
+      state.isLoggedIn = true;
     },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEBUGGING
-  })
+    resetUser(state) {
+      firebase.auth().signOut();
+      state.user = null;
+      state.isLoggedIn = null;
+    }
+  },
 
-  return Store
-}
+  actions: {
+    setUser({ commit }) {
+      commit("setUser");
+    },
+    resetUser({ commit }) {
+      commit("resetUser");
+    }
+  },
+
+  getters: {
+    getUser(state) {
+      return state.user;
+    }
+  }
+});
+
+export default store;
