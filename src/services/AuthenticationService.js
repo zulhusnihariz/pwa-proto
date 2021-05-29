@@ -1,7 +1,7 @@
 import Api from "../services/Api";
 
 export default {
-  register(credentials) {
-    return Api().post("register", credentials);
+  getAllUser(credentials) {
+    return Api().get("all-user", credentials);
   }
 };

@@ -6,6 +6,9 @@
 // Configuration for your app
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 
+let API_LOCAL = "http://localhost:8080/";
+let API_PRODUCTION = "https://qpwa.herokuapp.com/";
+
 module.exports = function(/* ctx */) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
@@ -38,6 +41,9 @@ module.exports = function(/* ctx */) {
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      env: {
+        API: API_LOCAL // 'API_LOCAL' or 'API_PRODUCTION'
+      },
       vueRouterMode: "hash", // available values: 'hash', 'history'
 
       // transpile: false,
@@ -103,7 +109,7 @@ module.exports = function(/* ctx */) {
 
     // https://v1.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
+      workboxPluginMode: "InjectManifest", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
         name: `Qpwa - Try This App`,

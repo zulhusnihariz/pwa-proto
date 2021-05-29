@@ -1,10 +1,9 @@
 /* -------------------------------------------------------------------------- */
 /*                               Firebase Admin SDK                           */
 /* -------------------------------------------------------------------------- */
-
 const admin = require("firebase-admin");
 
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = require("../../serviceAccountKey");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -13,4 +12,4 @@ admin.initializeApp({
 const db = admin.firestore();
 const auth = admin.auth();
 
-module.exports = { auth };
+module.exports = { db, auth };

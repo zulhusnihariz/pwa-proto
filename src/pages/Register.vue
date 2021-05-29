@@ -50,6 +50,9 @@ export default {
     };
   },
   methods: {
+    /* -------------------------------------------------------------------------- */
+    /*                          Firebase Client Side Auth                         */
+    /* -------------------------------------------------------------------------- */
     async registerUser() {
       try {
         const userData = await firebase
@@ -73,6 +76,33 @@ export default {
         });
       }
     }
+
+    /* -------------------------------------------------------------------------- */
+    /*                          Firebase Server Side Auth                         */
+    /* -------------------------------------------------------------------------- */
+
+    // async registerUser() {
+    //   try {
+    //     const response = await AuthenticationService.register({
+    //       uid: this.users.uid,
+    //       email: this.users.email,
+    //       password: this.users.password
+    //     });
+
+    //     console.log(response);
+
+    //     this.$q.notify({
+    //       message: "Registration successful!"
+    //     });
+
+    //     this.$router.push({ name: "Login" });
+    //   } catch (error) {
+    //     console.log(`this is the error message: ${error.message}`);
+    //     this.$q.notify({
+    //       message: `${error.message}`
+    //     });
+    //   }
+    // }
   }
 };
 </script>

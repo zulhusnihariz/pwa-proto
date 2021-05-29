@@ -42,6 +42,7 @@
 
 <script>
 import firebase from "firebase";
+import AuthenticationService from "../services/AuthenticationService";
 
 export default {
   name: "PageLogin",
@@ -56,6 +57,9 @@ export default {
     };
   },
   methods: {
+    /* -------------------------------------------------------------------------- */
+    /*                          Firebase Client Side Auth                         */
+    /* -------------------------------------------------------------------------- */
     async loginUser() {
       console.log("login button");
       try {
@@ -78,6 +82,10 @@ export default {
         });
       }
     }
+
+    /* -------------------------------------------------------------------------- */
+    /*                          Firebase Server Side Auth                         */
+    /* -------------------------------------------------------------------------- */
   },
   computed: {
     user() {
