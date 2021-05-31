@@ -3,10 +3,13 @@
 node_modules
 /src/config
 /src/models/serviceAccountKey
+/src/controllers/asdasd
 /src/models/firebaseConfig
+serviceAccountKey.json
 
 # Quasar core related directories
 .quasar
+.env
 /dist
 
 # Cordova related directories and files

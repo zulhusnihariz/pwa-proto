@@ -23,6 +23,7 @@
     "md-gum-polyfill": "^1.0.0",
     "nodemon": "^2.0.7",
     "quasar": "^1.0.0",
+    "twitter": "^1.7.1",
     "vue-qrcode-reader": "^3.0.1",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },

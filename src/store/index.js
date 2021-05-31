@@ -11,7 +11,10 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     user: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    startTime: null,
+    endTime: null,
+    covidData: []
   },
 
   mutations: {
@@ -24,6 +27,16 @@ const store = new Vuex.Store({
       firebase.auth().signOut();
       state.user = null;
       state.isLoggedIn = null;
+    },
+    setStartTime(state, startTime) {
+      state.startTime = startTime;
+    },
+    setEndTime(state, endTime) {
+      state.endTime = endTime;
+    },
+
+    setCovidData(state, covidData) {
+      state.covidData = covidData;
     }
   },
 
@@ -33,12 +46,30 @@ const store = new Vuex.Store({
     },
     resetUser({ commit }) {
       commit("resetUser");
+    },
+    setStartTime({ commit }, startTime) {
+      commit("setStartTime", startTime);
+    },
+    setEndTime({ commit }, endTime) {
+      commit("setEndTime", endTime);
+    },
+    setCovidData({ commit }, covidData) {
+      commit("setCovidData", covidData);
     }
   },
 
   getters: {
     getUser(state) {
       return state.user;
+    },
+    getStartTime(state) {
+      return state.startTime;
+    },
+    getEndTime(state) {
+      return state.endTime;
+    },
+    getCovidData(state) {
+      return state.covidData;
     }
   }
 });

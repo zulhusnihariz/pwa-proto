@@ -1,43 +1,106 @@
 <template>
   <q-page class="flex flex-center column q-pa-md">
-    <div class="camera-frame q-pa-md">
-      <qrcode-stream @decode="onDecode"></qrcode-stream>
-      <!-- <video class="full-width" ref="video" autoplay></video> -->
+    <div v-if="!timeExisted" class="camera-frame q-pa-md">
+      <qrcode-stream
+        :camera="camera"
+        @decode="onDecode"
+        @init="onInit"
+      ></qrcode-stream>
     </div>
-    <div class="q-pt-md">
-      <q-btn @click="clickCamera" round color="black" icon="fas fa-camera" />
-    </div>
+
+    <p>{{ userTokenId }}</p>
+
+    <CountdownTimer v-if="timeExisted"></CountdownTimer>
   </q-page>
 </template>
 
 <script>
 import AuthenticationService from "../services/AuthenticationService";
+import CountdownTimer from "../components/CheckIn/CountdownTimer";
+import firebase from "firebase";
 import { QRcodeStream } from "vue-qrcode-reader";
-require("md-gum-polyfill");
 
 export default {
   name: "CheckIn",
-  components: { QRcodeStream },
-  methods: {
-    async onDecode(result) {
-      try {
-        console.log(result);
-        const response = await AuthenticationService.getAllUser({});
+  components: { QRcodeStream, CountdownTimer },
+  data() {
+    return {
+      camera: "auto",
+      userTokenId: null,
+      timeExisted: false
+    };
+  },
+  mounted() {
+    let endTime = JSON.parse(this.$q.localStorage.getItem("vuex")).endTime;
 
-        console.log(response);
-      } catch (error) {
-        this.$q.notify(error);
+    // if time exists and haven't expired, use it
+    if (endTime && Date.now() < endTime) {
+      this.timeExisted = true;
+    }
+  },
+  methods: {
+    async onInit(promise) {
+      try {
+        await promise;
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.showScanConfirmation = this.camera === "off";
       }
     },
-    clickCamera() {
-      console.log("camerabutton");
+    async onDecode(result) {
+      console.log(result);
+      if (result == `https://qpwa.herokuapp.com/all-user`) {
+        try {
+          await this.getTokenId();
+          this.pause();
+          await this.timeout(500);
+          this.unpause();
+        } catch (error) {
+          console.log(error);
+          this.$q.notify(error);
+        }
+      } else {
+        console.log("not hello");
+      }
+    },
+    async getTokenId() {
+      await firebase.auth().onAuthStateChanged(async user => {
+        if (user != null) {
+          // get current user token id
+          const user = await firebase.auth().currentUser.getIdToken();
+          // send token to server for verification
+          const response = await AuthenticationService.verifyUser({
+            uid: user
+          });
+
+          // show countdown timer if time exists
+          this.timeExisted = true;
+
+          this.$store.dispatch(
+            "setStartTime",
+            response.data.currentTime.startTime
+          );
+          this.$store.dispatch("setEndTime", response.data.currentTime.endTime);
+        } else {
+          this.name = "Unknown";
+        }
+      });
+    },
+    unpause() {
+      this.camera = "auto";
+    },
+
+    pause() {
+      this.camera = "off";
+    },
+
+    timeout(ms) {
+      return new Promise(resolve => {
+        window.setTimeout(resolve, ms);
+      });
     }
   }
-
-  // ,
-  // mounted() {
-  //   this.initCamera();
-  // }
 };
 </script>
 

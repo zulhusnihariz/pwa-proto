@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes";
 import "firebase/auth";
+import store from "../store/index";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,13 @@ export default function(/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  });
+
+  console.log();
+
+  Router.beforeEach((to, from, next) => {
+    if (!store.getters.getUser && to.path !== "/login") next({ name: "Login" });
+    else next();
   });
 
   return Router;
